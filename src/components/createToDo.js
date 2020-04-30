@@ -1,28 +1,20 @@
 import React, {useState,useEffect} from 'react';
 
-function Createtodo() {
+function Createtodo(props) {
     
-    var  taskStoraged = localStorage.getItem("tasks")
-    if(!taskStoraged){
-        taskStoraged = []
-    }
-
     const[todo,setTodo]= useState("");
-
-    const[todos,setTodos]= useState([]);
-
-    const[done,setDone]= useState([]);
-
-    const[list,setList]= useState(taskStoraged)
 
     function submitTodo(){
         if(!todo){
-           alert("ooooo")
-        }else{
-            console.log(list)
-            var newlist = list.concat([todo])
-            setList(newlist)
-            setTodo("")
+           alert("Please write a task")
+        }else if(!todo.replace(/\s/g, '').length)//Verify if the new task only contains empty space
+        {
+            alert("Pleas write a task")
+            setTodo("") //Erase the empty spaces
+        }
+            else{
+            props.parentCall(todo) //Send to the parent the new task, so it will add it to the list
+            setTodo("")//Clear the input fiield
         }
     }
 
@@ -37,21 +29,15 @@ function Createtodo() {
                 class="form-control" 
                 value={todo} 
                 placeholder="Create a new task"
-                onChange={e => setTodo(e.target.value)}/>
+                onChange={e => setTodo(e.target.value)} //On Change handler
+                onKeyPress={event => {if(event.key == "Enter"){submitTodo()}}} //Enter key handler
+            />
         <div class="input-group-append">
-            <button type="button" class="btn btn-primary" onClick={submitTodo}>Save</button>
-        </div>
-        <div class="container">
-            <div class="row">
-                <ul>
-                    {list.map((task,index) =>(
-                        <li>{task}
-                            <button type="button" class="btn btn-primary" onClick={()=>{completeTodo(index)}}>Done!</button>
-                        </li>
-                        
-                    ))}
-                </ul>
-            </div>
+            <button type="button" class="btn btn-primary" 
+                onClick={submitTodo}//Click handler
+            >
+                Save
+            </button>
         </div>
         </div>
       </div>
