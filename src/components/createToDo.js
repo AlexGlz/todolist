@@ -1,8 +1,5 @@
 import React, {useState,useEffect} from 'react';
 
-
-
-
 function Createtodo() {
     
     var  taskStoraged = localStorage.getItem("tasks")
